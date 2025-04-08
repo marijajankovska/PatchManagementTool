@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patching List</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <form method="get">
+         <input type="text" name="q" placeholder="Search by machine name or IP..." value="{{ request.GET.q }}"  onkeydown="if(event.key === 'Enter'){ this.form.submit(); }">
+         <button type="submit">Search</button>
+        <a href="{% url 'main_page' %}" style="margin-left: 10px;">
+                <button type="button">Clear</button>
+        </a>
+    </form>
+    <button><a href="{% url 'patch_calendar' %}">View Patch Plan</a></button>
+
+    <h1>Patching List</h1>
+    <p>Showing {{ filter.qs.count }} result{{ filter.qs.count|pluralize }}.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Machine</th>
+                <th>System</th>
+                <th>IP</th>
+                <th>OS Name</th>
+                <th>OS Major Version</th>
+                <th>OS Admin</th>
+                <th>Deployment Stage</th>
+                <th>OS Support</th>
+                <th>EOL Date</th>
+                <th>In TOS</th>
+                <th>Point of Contact</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for patch in filter.qs %}
+            <tr>
+                <td>{{ patch.machine }}</td>
+                <td>{{ patch.system.name }}</td>
+                <td>{{ patch.ip }}</td>
+                <td>{{ patch.OS_Name }}</td>
+                <td>{{ patch.OS_major_version }}</td>
+                <td>{{ patch.OS_admin }}</td>
+                <td>{{ patch.deployment_stage }}</td>
+                <td>{{ patch.OS_support }}</td>
+                <td>{{ patch.eol_date }}</td>
+                <td>{{ patch.in_tos }}</td>
+                <td>{{ patch.point_of_contact }}</td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="36">No patching records available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

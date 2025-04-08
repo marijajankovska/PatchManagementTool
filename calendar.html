@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8' />
+  <title>Patch Calendar for {{ patch.machine }}</title>
+  <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
+  <style>
+    #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+    }
+  </style>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: [
+          {% for item in plans %}
+            {
+              title: '{{ item.status|title }} Patch',
+              start: '{{ item.date }}',
+              color: '{{ item.color }}'
+            },
+          {% endfor %}
+        ]
+      });
+
+      calendar.render();
+    });
+  </script>
+</head>
+<body>
+  <h2 style="text-align: center;">Patch Calendar</h2>
+  <div id='calendar'></div>
+  <div style="text-align: center; margin-top: 20px;">
+    <a href="{% url 'main_page' %}">Back to list</a>
+  </div>
+</body>
+</html>
